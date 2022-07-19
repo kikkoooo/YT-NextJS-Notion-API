@@ -8,10 +8,13 @@ export default function About({ data }) {
 
   const getPageDisplay = () => {
     let jsx = [];
+
     data.results.forEach((block) => {
+
       if (block.type === 'paragraph') {
-        jsx.push(<div>{block.paragraph.text[0]?.plain_text}</div>);
+        jsx.push(<p>{block.paragraph.text[0]?.plain_text}</p>);
       }
+
       if (block.type === 'bulleted_list_item') {
         jsx.push(
           <ul>
@@ -19,6 +22,21 @@ export default function About({ data }) {
           </ul>
         );
       }
+
+      if (block.type === 'heading_1') {
+        jsx.push(<h1>{block.heading_1.text[0]?.text.content}</h1>);
+      }
+
+      if (block.type === 'heading_2') {
+        jsx.push(<h2>{block.heading_2.text[0]?.text.content}</h2>);
+      }
+
+      if (block.type === 'heading_3') {
+        jsx.push(<h3>{block.heading_3.text[0]?.text.content}</h3>);
+      }
+
+
+
     });
     return jsx;
   };
@@ -28,8 +46,7 @@ export default function About({ data }) {
 
 export async function getStaticProps() {
   const notion = new Client({ auth: process.env.NOTION_API_KEY });
-
-  const blockId = '1e816f5cef0b406fbac8b98e533a4e0c';
+  const blockId = '47c2c837e61b48d9962bbc2132aa23bd';
   const response = await notion.blocks.children.list({
     block_id: blockId,
     page_size: 50,
